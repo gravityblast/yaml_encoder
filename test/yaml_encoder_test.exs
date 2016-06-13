@@ -25,6 +25,20 @@ defmodule YamlEncoderTest do
     assert value == ~s("foo"\n)
   end
 
+  test "encode tuple" do
+    value = YamlEncoder.encode {:foo, :bar}
+    assert value == ~s(foo: "bar"\n)
+  end
+
+  test "encode list of tuples" do
+    value = YamlEncoder.encode [{:foo, 1}, {:bar, 2}]
+    expected = """
+foo: 1
+bar: 2
+"""
+    assert value == expected
+  end
+
   test "encode string with single quotes" do
     value = YamlEncoder.encode "foo 'bar'"
     assert value == ~s("foo 'bar'"\n)
@@ -95,6 +109,10 @@ foo:
                 "world" => [
                   [1, 2],
                   [3, 4]
+                ],
+                "z" => [
+                  {:a, 1},
+                  {:b, 2}
                 ]
               }
             ]
@@ -122,6 +140,9 @@ foo:
             -
               - 3
               - 4
+          z:
+            a: 1
+            b: 2
 """
 
     assert value == expected

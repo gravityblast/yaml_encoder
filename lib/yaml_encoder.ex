@@ -35,8 +35,20 @@ defmodule YamlEncoder do
     encode_list indent, "", data
   end
 
+  defp encode(indent, {k, v}) do
+    prefix = indent_spaces indent
+    value = encode indent, v
+    "#{prefix}#{k}: #{value}"
+  end
+
   defp encode(indent, data) when is_map(data) do
     encode_map indent, "", data
+  end
+
+  defp encode_list(indent, s, [head|tail]) when is_tuple(head) do
+    for {k, v} <- [head|tail],
+      do: encode_key_value(indent, {k, v}),
+      into: s
   end
 
   defp encode_list indent, s, [head|tail] do
