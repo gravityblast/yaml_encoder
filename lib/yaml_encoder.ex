@@ -54,10 +54,10 @@ defmodule YamlEncoder do
 
     if is_map(v) || is_list(v) do
       value = encode indent + 1, v
-      "#{k}:\n#{value}"
+      "#{prefix}#{k}:\n#{value}"
     else
       value = encode indent, v
-      "#{k}: #{value}"
+      "#{prefix}#{k}: #{value}"
     end
   end
 
