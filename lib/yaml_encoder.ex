@@ -27,6 +27,10 @@ defmodule YamlEncoder do
     ~s(#{value}\n)
   end
 
+  defp encode(indent, data) when is_atom(data) do
+    encode indent, to_string(data)
+  end
+
   defp encode(indent, data) when is_list(data) do
     encode_list indent, "", data
   end

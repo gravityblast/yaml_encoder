@@ -20,6 +20,11 @@ defmodule YamlEncoderTest do
     assert value == ~s("foo"\n)
   end
 
+  test "encode atom" do
+    value = YamlEncoder.encode :foo
+    assert value == ~s("foo"\n)
+  end
+
   test "encode string with single quotes" do
     value = YamlEncoder.encode "foo 'bar'"
     assert value == ~s("foo 'bar'"\n)
