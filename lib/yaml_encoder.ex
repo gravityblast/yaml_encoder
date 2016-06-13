@@ -41,6 +41,13 @@ defmodule YamlEncoder do
     value = encode data
     prefix = indent_spaces(indent)
     "#{prefix}- #{value}"
+    if is_map(data) || is_list(data) do
+      value = encode indent + 1, data
+      "#{prefix}-\n#{value}"
+    else
+      value = encode indent, data
+      "#{prefix}- #{value}"
+    end
   end
 
   defp encode_map indent, s, data do

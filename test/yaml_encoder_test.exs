@@ -81,7 +81,20 @@ foo:
   test "encode map with a map child" do
     data = %{
       "foo" => %{
-        "bar" => "baz"
+        "bar" => %{
+          "baz" => %{
+            "xxx" => [1, 2],
+            "zzz" => [
+              %{
+                "hello" => 1,
+                "world" => [
+                  [1, 2],
+                  [3, 4]
+                ]
+              }
+            ]
+          }
+        }
       }
     }
 
@@ -89,7 +102,21 @@ foo:
 
     expected = """
 foo:
-  bar: "baz"
+  bar:
+    baz:
+      xxx:
+        - 1
+        - 2
+      zzz:
+        -
+          hello: 1
+          world:
+            -
+              - 1
+              - 2
+            -
+              - 3
+              - 4
 """
 
     assert value == expected
