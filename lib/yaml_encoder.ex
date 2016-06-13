@@ -1,13 +1,20 @@
 defmodule YamlEncoder do
+  @moduledoc """
+  Not ready for production, still WIP.
+  """
+
+  @doc """
+  Encodes data to YAML
+  """
   def encode value do
     encode 0, value
   end
 
-  def encode(indent, data) when is_number(data) do
+  defp encode(indent, data) when is_number(data) do
     "#{data}\n"
   end
 
-  def encode(indent, data) when is_boolean(data) do
+  defp encode(indent, data) when is_boolean(data) do
     value = case data do
       true -> "true"
       _ -> "false"
@@ -15,16 +22,16 @@ defmodule YamlEncoder do
     ~s(#{value}\n)
   end
 
-  def encode(indent, data) when is_binary(data) do
+  defp encode(indent, data) when is_binary(data) do
     value = encode_string indent, data
     ~s(#{value}\n)
   end
 
-  def encode(indent, data) when is_list(data) do
+  defp encode(indent, data) when is_list(data) do
     encode_list indent, "", data
   end
 
-  def encode(indent, data) when is_map(data) do
+  defp encode(indent, data) when is_map(data) do
     encode_map indent, "", data
   end
 
@@ -74,15 +81,15 @@ defmodule YamlEncoder do
     encode_string indent, data, single_quotes, double_quotes
   end
 
-  def encode_string(indent, data, true, true) do
+  defp encode_string(indent, data, true, true) do
     ~s('''#{data}''')
   end
 
-  def encode_string(indent, data, false, true) do
+  defp encode_string(indent, data, false, true) do
     ~s('#{data}')
   end
 
-  def encode_string(indent, data, _single_quotes, _double_quotes) do
+  defp encode_string(indent, data, _single_quotes, _double_quotes) do
     ~s("#{data}")
   end
 
