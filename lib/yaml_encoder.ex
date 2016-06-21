@@ -114,6 +114,6 @@ defmodule YamlEncoder do
   end
 
   defp indent_spaces n do
-    for _ <- (0..n-1), do: "  ", into: ""
+    String.duplicate " ", n
   end
 end
