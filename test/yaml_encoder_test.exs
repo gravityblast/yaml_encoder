@@ -80,6 +80,16 @@ bar: 2
     end
   end
 
+  test "encode map with multi line string" do
+    value = YamlEncoder.encode %{"foo" => "bar\nbaz"}
+    expected = """
+foo: |
+  bar
+  baz
+"""
+    assert value == expected
+  end
+
   test "encode map with a list child" do
     data = %{
       "foo" => [1, 2, 3]
