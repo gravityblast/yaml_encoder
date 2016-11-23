@@ -82,12 +82,22 @@ defmodule YamlEncoder do
   defp encode_key_value indent, {k, v} do
     prefix = indent_spaces indent
 
-    if is_map(v) || is_list(v) do
-      value = encode indent + 1, v
-      "#{prefix}#{k}:\n#{value}"
-    else
-      value = encode indent, v
-      "#{prefix}#{k}: #{value}"
+    case v do
+      v when is_map(v) or is_list(v) ->
+        value = encode indent + 1, v
+        "#{prefix}#{k}:\n#{value}"
+      v when is_binary(v) ->
+        if String.contains?(v, "\n") do
+            value_prefix = indent_spaces indent+1
+            value = [""] ++ String.split(v, "\n") |> Enum.join("\n" <> value_prefix)
+            "#{prefix}#{k}: |#{value}\n"          
+          else
+            value = encode indent, v
+            "#{prefix}#{k}: #{value}"
+        end
+      _ ->
+        value = encode indent, v
+        "#{prefix}#{k}: #{value}"
     end
   end
 
