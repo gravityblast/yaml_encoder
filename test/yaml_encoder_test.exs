@@ -18,6 +18,8 @@ defmodule YamlEncoderTest do
   test "encode string" do
     value = YamlEncoder.encode "foo"
     assert value == ~s("foo"\n)
+    value = YamlEncoder.encode "foo\nbar"
+    assert value == ~s("foo\\nbar"\n)
   end
 
   test "encode atom" do
@@ -146,5 +148,23 @@ foo:
 """
 
     assert value == expected
+  end
+
+  test "encode map with multi line value" do
+    text = """
+    line 1
+    line 2
+    line 3
+    """
+    data = %{foo: %{bar: text}}
+    value = YamlEncoder.encode data
+
+    expected = """
+    foo:
+      bar: "line 1\\nline 2\\nline 3\\n"
+    """
+
+    assert value == expected
+
   end
 end
