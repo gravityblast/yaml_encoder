@@ -94,6 +94,7 @@ defmodule YamlEncoder do
   defp encode_string indent, data do
     single_quotes = data =~ ~r/'/
     double_quotes = data =~ ~r/"/
+    data = String.replace(data, "\n", "\\n")
     encode_string indent, data, single_quotes, double_quotes
   end
 
