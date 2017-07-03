@@ -28,7 +28,8 @@ defmodule YamlEncoder do
   end
 
   defp encode(indent, data) when is_atom(data) do
-    encode indent, to_string(data)
+    value = encode_atom indent, data
+    ~s(#{value}\n)
   end
 
   defp encode(indent, data) when is_list(data) do
@@ -107,6 +108,10 @@ defmodule YamlEncoder do
 
   defp encode_string(indent, data, _single_quotes, _double_quotes) do
     ~s("#{data}")
+  end
+
+  defp encode_atom(indent, data) do
+    ~s(#{data})
   end
 
   defp indent_spaces 0 do
