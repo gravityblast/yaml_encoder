@@ -111,7 +111,11 @@ defmodule YamlEncoder do
   end
 
   defp encode_atom(indent, data) do
-    ~s(#{data})
+    if Regex.match?(~r/^[a-z][a-zA-Z0-9_@]*$/, Atom.to_string(data)) do
+      ~s(#{data})
+    else
+      ~s(!<tag:yamerl,2012:atom> #{data})
+    end
   end
 
   defp indent_spaces 0 do
