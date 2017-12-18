@@ -10,11 +10,11 @@ defmodule YamlEncoder do
     encode 0, value
   end
 
-  defp encode(indent, data) when is_number(data) do
+  defp encode(_indent, data) when is_number(data) do
     "#{data}\n"
   end
 
-  defp encode(indent, data) when is_boolean(data) do
+  defp encode(_indent, data) when is_boolean(data) do
     value = case data do
       true -> "true"
       _ -> "false"
@@ -52,12 +52,12 @@ defmodule YamlEncoder do
       into: s
   end
 
-  defp encode_list indent, s, [head|tail] do
+  defp encode_list(indent, s, [head|tail]) do
     value = encode_list_item indent, head
     encode_list indent, "#{s}#{value}", tail
   end
 
-  defp encode_list indent, s, [] do
+  defp encode_list(_indent, s, []) do
     s
   end
 
@@ -98,19 +98,19 @@ defmodule YamlEncoder do
     encode_string indent, data, single_quotes, double_quotes
   end
 
-  defp encode_string(indent, data, true, true) do
+  defp encode_string(_indent, data, true, true) do
     ~s('''#{data}''')
   end
 
-  defp encode_string(indent, data, false, true) do
+  defp encode_string(_indent, data, false, true) do
     ~s('#{data}')
   end
 
-  defp encode_string(indent, data, _single_quotes, _double_quotes) do
+  defp encode_string(_indent, data, _single_quotes, _double_quotes) do
     ~s("#{data}")
   end
 
-  defp encode_atom(indent, data) do
+  defp encode_atom(_indent, data) do
     if Regex.match?(~r/^[a-z][a-zA-Z0-9_@]*$/, Atom.to_string(data)) do
       ~s(#{data})
     else
