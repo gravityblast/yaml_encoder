@@ -20,6 +20,14 @@ defmodule YamlEncoderTest do
     assert value == ~s("foo"\n)
   end
 
+  test "encode string, escape control characters" do
+    value = YamlEncoder.encode("foo\nbar")
+    assert value == ~s("foo\\nbar"\n)
+
+    value = YamlEncoder.encode("\\")
+    assert value == ~s("\\\\"\n)
+  end
+
   test "encode atom" do
     value = YamlEncoder.encode(:foo)
     assert value == ~s("foo"\n)

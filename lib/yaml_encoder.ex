@@ -105,15 +105,30 @@ defmodule YamlEncoder do
   end
 
   defp encode_string(indent, data, true, true) do
-    ~s('''#{data}''')
+    ["'''", escape(data), "'''"]
+    |> IO.iodata_to_binary()
   end
 
   defp encode_string(indent, data, false, true) do
-    ~s('#{data}')
+    [?', escape(data), ?']
+    |> IO.iodata_to_binary()
   end
 
   defp encode_string(indent, data, _single_quotes, _double_quotes) do
-    ~s("#{data}")
+    [?", escape(data), ?"]
+    |> IO.iodata_to_binary()
+  end
+
+  defp escape(""), do: []
+
+  for {char, seq} <- Enum.zip('\\\n\t\r\f\b', '\\ntrfb') do
+    defp escape(<<unquote(char)>> <> rest) do
+      [unquote("\\" <> <<seq>>) | escape(rest)]
+    end
+  end
+
+  defp escape(<<char::utf8>> <> rest) do
+    [char | escape(rest)]
   end
 
   defp indent_spaces(0) do
