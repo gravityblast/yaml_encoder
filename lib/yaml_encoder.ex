@@ -127,7 +127,7 @@ defmodule YamlEncoder do
     end
   end
 
-  defp escape(<<char::utf8>> <> rest) do
+  defp escape(<<char::8>> <> rest) do
     [char | escape(rest)]
   end
 

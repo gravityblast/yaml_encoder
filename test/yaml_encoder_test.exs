@@ -26,6 +26,9 @@ defmodule YamlEncoderTest do
 
     value = YamlEncoder.encode("\\")
     assert value == ~s("\\\\"\n)
+
+    value = YamlEncoder.encode("\\ 💬 Escalate")
+    assert value == ~s("\\\\ 💬 Escalate"\n)
   end
 
   test "encode atom" do
