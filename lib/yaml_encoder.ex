@@ -10,11 +10,11 @@ defmodule YamlEncoder do
     encode(0, value)
   end
 
-  defp encode(indent, data) when is_number(data) do
+  defp encode(_indent, data) when is_number(data) do
     "#{data}\n"
   end
 
-  defp encode(indent, data) when is_boolean(data) do
+  defp encode(_indent, data) when is_boolean(data) do
     value =
       case data do
         true -> "true"
@@ -33,7 +33,7 @@ defmodule YamlEncoder do
     encode(indent, to_string(data))
   end
 
-  defp encode(indent, []) do
+  defp encode(_indent, []) do
     "[]\n"
   end
 
@@ -62,7 +62,7 @@ defmodule YamlEncoder do
     encode_list(indent, "#{s}#{value}", tail)
   end
 
-  defp encode_list(indent, s, []) do
+  defp encode_list(_indent, s, []) do
     s
   end
 
@@ -104,17 +104,17 @@ defmodule YamlEncoder do
     encode_string(indent, data, single_quotes, double_quotes)
   end
 
-  defp encode_string(indent, data, true, true) do
+  defp encode_string(_indent, data, true, true) do
     ["'''", escape(data), "'''"]
     |> IO.iodata_to_binary()
   end
 
-  defp encode_string(indent, data, false, true) do
+  defp encode_string(_indent, data, false, true) do
     [?', escape(data), ?']
     |> IO.iodata_to_binary()
   end
 
-  defp encode_string(indent, data, _single_quotes, _double_quotes) do
+  defp encode_string(_indent, data, _single_quotes, _double_quotes) do
     [?", escape(data), ?"]
     |> IO.iodata_to_binary()
   end
