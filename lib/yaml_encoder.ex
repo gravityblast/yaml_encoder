@@ -37,6 +37,10 @@ defmodule YamlEncoder do
     "[]\n"
   end
 
+  defp encode(_indent, map) when map == %{} do
+    "{}\n"
+  end
+
   defp encode(indent, data) when is_list(data) do
     encode_list(indent, "", data)
   end
@@ -89,7 +93,7 @@ defmodule YamlEncoder do
   defp encode_key_value(indent, {k, v}) do
     prefix = indent_spaces(indent)
 
-    if is_map(v) || (is_list(v) && length(v) > 0) do
+    if (is_map(v) && v !== %{}) || (is_list(v) && length(v) > 0) do
       value = encode(indent + 1, v)
       "#{prefix}#{k}:\n#{value}"
     else

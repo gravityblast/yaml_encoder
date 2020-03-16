@@ -179,4 +179,18 @@ defmodule YamlEncoderTest do
 
     assert value == expected
   end
+
+  test "encode empty map" do
+    value = YamlEncoder.encode(%{})
+
+    expected = "{}\n"
+    assert value == expected
+  end
+
+  test "encode nested empty map" do
+    value = YamlEncoder.encode([{:foo, %{}}])
+
+    expected = "foo: {}\n"
+    assert value == expected
+  end
 end
