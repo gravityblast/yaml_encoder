@@ -108,8 +108,8 @@ defmodule YamlEncoder do
     encode_string(indent, data, single_quotes, double_quotes)
   end
 
-  defp encode_string(_indent, data, true, true) do
-    ["'''", escape(data), "'''"]
+  defp encode_string(indent, data, true, true) do
+    [">\n", indent_spaces(indent + 1), data]
     |> IO.iodata_to_binary()
   end
 

@@ -64,7 +64,11 @@ defmodule YamlEncoderTest do
 
   test "encode string with single and double quotes" do
     value = YamlEncoder.encode(~s(foo "bar" 'baz'))
-    assert value == ~s('''foo "bar" 'baz''''\n)
+    assert value == ~s(>\n  foo "bar" 'baz'\n)
+    value = YamlEncoder.encode(%{"key" => ~s(foo "bar" 'baz')})
+    assert value == ~s(key: >\n  foo "bar" 'baz'\n)
+    value = YamlEncoder.encode([%{"key" => ~s(foo "bar" 'baz')}])
+    assert value == ~s(-\n  key: >\n    foo "bar" 'baz'\n)
   end
 
   test "encode list" do
